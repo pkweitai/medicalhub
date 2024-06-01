@@ -1,4 +1,4 @@
-## Medicalhub AI
+# ![Alt text](logo1.png?raw=true "Title") Medicalhub AI
 An open source  advanced analytical tool designed to provide data insights on heart disease trends, patient demographics, and treatment efficacy.Models are pre-trained with state-of-the-art machine learning algorithms, this tool helps healthcare providers identify at-risk patients, optimize treatment plans, and improve overall patient outcomes.
 
 ## Features
