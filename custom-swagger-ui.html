@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Custom Swagger UI</title>
+  <link rel="stylesheet" type="text/css" href="/swagger-ui/swagger-ui.css">
+  <link rel="icon" type="image/png" href="/swagger-ui/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/swagger-ui/favicon-16x16.png" sizes="16x16" />
+  <style>
+    html {
+      box-sizing: border-box;
+      overflow: -moz-scrollbars-vertical;
+      overflow-y: scroll;
+    }
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+    body {
+      margin: 0;
+      background: #fafafa;
+      display: flex;
+    }
+    #sidebar {
+      width: 10px;
+      height: 10vh;
+      background: #f8f9fa;
+      padding: 10px;
+      overflow-y: auto;
+    }
+    #swagger-ui {
+      flex-grow: 1;
+      margin-left: 260px; /* Adjust based on sidebar width */
+    }
+    .sidebar-item {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #ccc;
+    }
+    .sidebar-item:hover {
+      background: #ddd;
+    }
+    .topbar-wrapper .logo {
+      height: 30px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="sidebar"></div>
+  <div id="swagger-ui"></div>
+
+  <script src="/swagger-ui/swagger-ui-bundle.js"></script>
+  <script src="/swagger-ui/swagger-ui-standalone-preset.js"></script>
+  <script>
+  window.onload = function() {
+    console.log("Loading Swagger UI...");  // Debugging log
+    const ui = SwaggerUIBundle({
+      url: "swagger.json",
+      dom_id: '#swagger-ui',
+      deepLinking: true,
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIStandalonePreset
+      ],
+      plugins: [
+        SwaggerUIBundle.plugins.DownloadUrl
+      ],
+      layout: "BaseLayout",
+      // Customize the Swagger UI
+      docExpansion: 'full', // 'list' or 'full'
+      filter: true,
+      tryItOutEnabled: true,
+      showExtensions: true,
+      showCommonExtensions: true
+    });
+
+    // Adding the logo image next to the title
+    const topbarWrapper = document.querySelector('.topbar-wrapper');
+    const logo = document.createElement('img');
+    logo.src = 'images/logo.png';  // Ensure this path is correct
+    logo.className = 'logo';
+    const title = topbarWrapper.querySelector('a span');
+    title.insertBefore(logo, title.firstChild);
+
+    // Populate sidebar with API names
+    fetch('swagger.json')
+      .then(response => response.json())
+      .then(data => {
+        console.log("Swagger JSON Loaded", data);  // Debugging log
+        const sidebar = document.getElementById('sidebar');
+        const paths = data.paths;
+        for (const path in paths) {
+          const endpoint = document.createElement('div');
+          endpoint.className = 'sidebar-item';
+          endpoint.textContent = path;
+          endpoint.onclick = () => {
+            // Scroll to the API section in Swagger UI
+            const section = document.querySelector(`[data-path="${path}"]`);
+            if (section) {
+              section.scrollIntoView({ behavior: 'smooth' });
+            }
+          };
+          sidebar.appendChild(endpoint);
+        }
+      })
+      .catch(err => console.error('Failed to load Swagger JSON', err));
+    
+    window.ui = ui;
+  }
+  </script>
+</body>
+</html>

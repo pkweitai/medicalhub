@@ -1,0 +1,286 @@
+---
+swagger: "2.0"
+info:
+  description: "API for ECG Analysis"
+  version: "1.0.0"
+  title: "ECG Analysis API"
+host: "localhost:8888"
+basePath: "/"
+tags:
+- name: "ECG"
+  description: "Operations related to ECG analysis"
+schemes:
+- "http"
+paths:
+  /denoise:
+    post:
+      tags:
+      - "ECG"
+      summary: "Denoise ECG Data"
+      description: "This endpoint processes raw ECG data to denoise it."
+      operationId: "denoiseECG"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "ECG data to be denoised"
+        required: true
+        schema:
+          $ref: "#/definitions/body"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/inline_response_200"
+      x-swagger-router-controller: "ECG"
+  /arrhythmia:
+    post:
+      tags:
+      - "ECG"
+      summary: "Detect Arrhythmia in ECG Data"
+      description: "This endpoint processes raw ECG data to detect arrhythmia."
+      operationId: "detectArrhythmia"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "ECG data to be analyzed for arrhythmia"
+        required: true
+        schema:
+          $ref: "#/definitions/body_1"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/inline_response_200_1"
+      x-swagger-router-controller: "ECG"
+definitions:
+  body_1:
+    type: "object"
+    properties:
+      raw_ecg:
+        type: "array"
+        items:
+          type: "number"
+      multiplier:
+        type: "number"
+      frequency:
+        type: "integer"
+      gender:
+        type: "integer"
+      developer_id:
+        type: "string"
+      session_id:
+        type: "string"
+      user_id:
+        type: "string"
+      temperature:
+        type: "number"
+      systolic:
+        type: "integer"
+      diastolic:
+        type: "integer"
+      co2:
+        type: "number"
+  inline_response_200_1:
+    type: "object"
+    properties:
+      hr:
+        type: "number"
+      afib:
+        type: "boolean"
+      pac:
+        type: "boolean"
+      pvc:
+        type: "boolean"
+      pac_pvc_loc:
+        type: "array"
+        items:
+          type: "number"
+      sb:
+        type: "boolean"
+      vt:
+        type: "boolean"
+      hyperk:
+        type: "boolean"
+      hypok:
+        type: "boolean"
+      hyperca:
+        type: "boolean"
+      hypoca:
+        type: "boolean"
+      qtc_long:
+        type: "boolean"
+      qtc_short:
+        type: "boolean"
+      qrs_wide:
+        type: "boolean"
+      twave_neg:
+        type: "boolean"
+      st_elev_abn:
+        type: "boolean"
+      lorenz_x:
+        type: "number"
+      lorenz_y:
+        type: "number"
+      hrvrmssd:
+        type: "number"
+      hrvsdsd:
+        type: "number"
+      unit:
+        type: "string"
+      qrs:
+        type: "number"
+      pr:
+        type: "number"
+      qt:
+        type: "number"
+      qtc:
+        type: "number"
+      st_elev:
+        type: "number"
+      ecg_tmpl:
+        type: "array"
+        items:
+          type: "number"
+      mask:
+        type: "array"
+        items:
+          type: "number"
+      quality:
+        type: "number"
+      temperature_result:
+        type: "string"
+      bp_result:
+        type: "string"
+      co2_result:
+        type: "string"
+    example:
+      st_elev_abn: true
+      pr: 9.301444243932575517419536481611430644989013671875
+      hr: 0.80082819046101150206595775671303272247314453125
+      hrvsdsd: 2.3021358869347654518833223846741020679473876953125
+      sb: true
+      afib: true
+      pac: true
+      hyperca: true
+      qrs_wide: true
+      pvc: true
+      bp_result: "bp_result"
+      mask:
+      - 1.231513536777255612975068288506008684635162353515625
+      - 1.231513536777255612975068288506008684635162353515625
+      qtc: 2.027123023002321833274663731572218239307403564453125
+      lorenz_y: 5.962133916683182377482808078639209270477294921875
+      qt: 3.61607674925191080461672754609026014804840087890625
+      lorenz_x: 1.46581298050294517310021547018550336360931396484375
+      hypok: true
+      temperature_result: "temperature_result"
+      hyperk: true
+      hrvrmssd: 5.63737665663332876420099637471139430999755859375
+      pac_pvc_loc:
+      - 6.02745618307040320615897144307382404804229736328125
+      - 6.02745618307040320615897144307382404804229736328125
+      qtc_long: true
+      quality: 1.024645700144157789424070870154537260532379150390625
+      unit: "unit"
+      qrs: 7.061401241503109105224211816675961017608642578125
+      qtc_short: true
+      ecg_tmpl:
+      - 7.3862819483858839220147274318151175975799560546875
+      - 7.3862819483858839220147274318151175975799560546875
+      hypoca: true
+      twave_neg: true
+      co2_result: "co2_result"
+      vt: true
+      st_elev: 4.1456080298839363962315474054776132106781005859375
+  inline_response_200:
+    type: "object"
+    properties:
+      hr:
+        type: "number"
+      hrvrmssd:
+        type: "number"
+      hrvsdsd:
+        type: "number"
+      unit:
+        type: "string"
+      qrs:
+        type: "number"
+      pr:
+        type: "number"
+      qt:
+        type: "number"
+      qtc:
+        type: "number"
+      st_elev:
+        type: "number"
+      ecg_tmpl:
+        type: "array"
+        items:
+          type: "number"
+      mask:
+        type: "array"
+        items:
+          type: "number"
+      quality:
+        type: "number"
+      temperature_result:
+        type: "string"
+      bp_result:
+        type: "string"
+      co2_result:
+        type: "string"
+    example:
+      qtc: 7.061401241503109105224211816675961017608642578125
+      pr: 5.63737665663332876420099637471139430999755859375
+      qt: 2.3021358869347654518833223846741020679473876953125
+      temperature_result: "temperature_result"
+      hr: 0.80082819046101150206595775671303272247314453125
+      hrvrmssd: 6.02745618307040320615897144307382404804229736328125
+      hrvsdsd: 1.46581298050294517310021547018550336360931396484375
+      quality: 4.1456080298839363962315474054776132106781005859375
+      unit: "unit"
+      qrs: 5.962133916683182377482808078639209270477294921875
+      ecg_tmpl:
+      - 3.61607674925191080461672754609026014804840087890625
+      - 3.61607674925191080461672754609026014804840087890625
+      bp_result: "bp_result"
+      co2_result: "co2_result"
+      st_elev: 9.301444243932575517419536481611430644989013671875
+      mask:
+      - 2.027123023002321833274663731572218239307403564453125
+      - 2.027123023002321833274663731572218239307403564453125
+  body:
+    type: "object"
+    properties:
+      raw_ecg:
+        type: "array"
+        items:
+          type: "number"
+      multiplier:
+        type: "number"
+      frequency:
+        type: "integer"
+      gender:
+        type: "integer"
+      developer_id:
+        type: "string"
+      session_id:
+        type: "string"
+      user_id:
+        type: "string"
+      temperature:
+        type: "number"
+      systolic:
+        type: "integer"
+      diastolic:
+        type: "integer"
+      co2:
+        type: "number"
